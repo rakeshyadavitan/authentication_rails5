@@ -1,15 +1,46 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>AuthenticationRails</title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
 
-  <body>
-    <%= yield %>
-  </body>
+<head>
+<title>Authentication</title>
+<%= csrf_meta_tags %>
+<%= csp_meta_tag %>
+</head>
+
+
+<body>
+
+<header>
+  <nav>
+    <% if current_user %>
+      <p>
+        Logged in as <%= current_user.email %>
+        |
+        <%= link_to "Logout", session_path(current_user.id), method: :delete %>
+      </p>
+    <% else %>
+      <p>
+        <%= link_to "Sign Up", new_registration_path %>
+        |
+        <%= link_to "Log In", new_session_path %>
+      </p>
+    <% end %>
+  </nav>
+
+  <% flash.each do |name, msg| %>
+    <%= tag.div msg, id: name %>
+  <% end %>
+</header>
+
+<main>
+<%= yield %>
+</main>
+
+<footer>
+</footer>
+
+</body>
+
+
 </html>

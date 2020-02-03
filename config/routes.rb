@@ -1,9 +1,11 @@
 Rails.application.routes.draw do
-  root 'home#index'
-  
+
+  root to: 'pras_devise/registrations#new'
   resources :users
-  resources :sessions, only: [:new, :create, :destroy]
-  get 'signup', to: 'users#new', as: 'signup'
-  get 'login', to: 'sessions#new', as: 'login'
-  get 'logout', to: 'sessions#destroy', as: 'logout'
-end
+  scope module: :pras_devise do
+    resources :registrations, only: [:new, :create]
+    resources :confirmations, only: [:new, :show]
+    resources :sessions, only: [:new, :create, :destroy]
+    resources :password_resets, only: [:new, :edit, :create, :update]
+  end
+end 
