@@ -1,7 +1,7 @@
 module PrasDevise
   class RegistrationsController < PrasDeviseController
 
-    prepend_before_action :require_no_authentication, only: %i(new create)
+    prepend_before_action :require_no_authentication, only: %i(create)
 
     def new
       @user = User.new
