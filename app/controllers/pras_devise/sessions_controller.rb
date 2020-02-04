@@ -23,7 +23,9 @@ module PrasDevise
       redirect_to root_url, notice: "Logged out!"
     end
 
-    private def require_confirmation!
+    private
+
+    def require_confirmation!
       if @user.confirmed_at.blank?
         # Don't give any clue
         flash.now.alert = "Email or password is invalid"
@@ -31,19 +33,20 @@ module PrasDevise
       end
     end
 
-    private def login!
+    def login!
       unless @user.remember_token
         @user.generate_token(:remember_token)
         @user.save
       end
       if params[:remember_me]
-        cookies.encrypted.permanent[:remember_token] = @user.remember_token
+        # cookies.encrypted.permanent[:remember_token] = @user.remember_token
+        cookies.encrypted.permanent[:remember_token] = { value: @user.remember_token, expires: 2.weeks.from_now }
       else
         cookies.encrypted[:remember_token] = @user.remember_token
       end
     end
 
-    private def set_user
+    def set_user
       @user = User.find_by(email: params[:email])
     end
 

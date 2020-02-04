@@ -5,24 +5,18 @@ one:
   name: MyString1
   password_digest: <%= BCrypt::Password.create('password') %>
   remember_token: 'asdbasdf'
-  password_reset_token: 'blahblah'
-  password_reset_sent_at: <%= DateTime.current %>
 
 two:
   email: two@two.com
   name: MyString2
   password_digest: <%= BCrypt::Password.create('password') %>
   remember_token: 'axdbasdf1'
-  password_reset_token: 'blahblah1'
-  password_reset_sent_at: <%= DateTime.current %>
 
 three:
   email: j@j.com
   name: J
   password_digest: <%= BCrypt::Password.create('password') %>
   remember_token: 'axdbasdf2'
-  password_reset_token: 'blahblah2'
-  password_reset_sent_at: <%= DateTime.current %>
 
 # == Schema Information
 #
@@ -35,8 +29,6 @@ three:
 #  email                  :string           not null
 #  name                   :string
 #  password_digest        :string
-#  password_reset_sent_at :datetime
-#  password_reset_token   :string
 #  remember_token         :string
 #  unconfirmed_email      :string
 #  created_at             :datetime         not null
@@ -46,7 +38,6 @@ three:
 #
 #  index_users_on_confirmation_token    (confirmation_token) UNIQUE
 #  index_users_on_email                 (email) UNIQUE
-#  index_users_on_password_reset_token  (password_reset_token) UNIQUE
 #  index_users_on_remember_token        (remember_token) UNIQUE
 #  index_users_on_unconfirmed_email     (unconfirmed_email) UNIQUE
 #

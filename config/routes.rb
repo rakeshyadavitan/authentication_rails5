@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   scope module: :pras_devise do
     resources :registrations, only: [:new, :create]
     resources :confirmations, only: [:new, :show]
-    resources :sessions, only: [:new, :create, :destroy]
-    resources :password_resets, only: [:new, :edit, :create, :update]
+    resources :sessions, only: [:new, :create]
+    get 'sign_out' => "sessions#destroy"
   end
 end 

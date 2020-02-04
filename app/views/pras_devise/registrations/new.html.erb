@@ -32,5 +32,10 @@
     <%= f.password_field :password_confirmation %>
   </div>
 
+  <div class="field">
+    <%= f.label :terms_of_service%><br />
+    <%= f.check_box :terms_of_service %>
+  </div>
+
   <div class="actions"><%= f.submit "Sign Up", data: { "disable-with": "Saving..." } %></div>
 <% end %>

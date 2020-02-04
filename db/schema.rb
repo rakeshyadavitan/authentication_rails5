@@ -10,24 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_27_090509) do
+ActiveRecord::Schema.define(version: 2020_02_04_063256) do
 
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "email", null: false
     t.string "password_digest"
     t.string "remember_token"
-    t.string "password_reset_token"
-    t.datetime "password_reset_sent_at"
     t.string "confirmation_token"
     t.string "unconfirmed_email"
     t.datetime "confirmation_sent_at"
     t.datetime "confirmed_at"
+    t.boolean "terms_of_service", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["password_reset_token"], name: "index_users_on_password_reset_token", unique: true
     t.index ["remember_token"], name: "index_users_on_remember_token", unique: true
     t.index ["unconfirmed_email"], name: "index_users_on_unconfirmed_email", unique: true
   end

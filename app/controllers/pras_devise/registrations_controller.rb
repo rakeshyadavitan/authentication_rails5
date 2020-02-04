@@ -1,7 +1,7 @@
 module PrasDevise
   class RegistrationsController < PrasDeviseController
 
-    # prepend_before_action :require_no_authentication, only: %i(new create)
+    prepend_before_action :require_no_authentication, only: %i(new create)
 
     def new
       @user = User.new
@@ -18,10 +18,10 @@ module PrasDevise
       end
     end
 
-    private def user_params
-      params
-        .require(:user)
-        .permit(:name, :email, :password, :password_confirmation)
+    private
+
+    def user_params
+      params.require(:user).permit(:name, :email, :password, :password_confirmation, :terms_of_service)
     end
 
   end
