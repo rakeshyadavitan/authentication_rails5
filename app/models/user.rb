@@ -1,20 +1,49 @@
 class User < ApplicationRecord
 
-  has_secure_password
+  attr_accessor :password
 
-  CONFIRMATION_TOKEN_VALIDITY = 1.hour
-
+  EMAIL_REGEX = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/i
+  
   validates_acceptance_of :terms_of_service, accept: true
-
-  def generate_token_and_send_instructions!(token_type:)
-    generate_token(:"#{token_type}_token")
-    self[:"#{token_type}_sent_at"] = Time.now.utc
-    save!
-    UserMailer.with(user: self).send(:"email_#{token_type}").deliver_later
+  
+  validates :name, presence: true, uniqueness: true, length: { in: 3..20 }
+  
+  validates :email, presence: true, uniqueness: true, format: EMAIL_REGEX
+  
+  validates :password, confirmation: true #password_confirmation attr
+  
+  validates_length_of :password, in: 6..20, on: :create
+  
+  before_save :encrypt_password
+  
+  after_save :clear_password
+  
+  def encrypt_password
+    if password.present?
+      self.salt = BCrypt::Engine.generate_salt
+      self.encrypted_password= BCrypt::Engine.hash_secret(password, salt)
+    end
+  end
+  
+  def clear_password
+    self.password = nil
   end
 
-  def confirmation_token_expired?
-    (Time.now.utc - self.confirmation_sent_at) > CONFIRMATION_TOKEN_VALIDITY
+  def self.authenticate(username_or_email="", login_password="")
+    if  EMAIL_REGEX.match(username_or_email)    
+      user = User.find_by_email(username_or_email)
+    else
+      user = User.find_by_username(username_or_email)
+    end
+    if user && user.match_password(login_password)
+      return user
+    else
+      return false
+    end
+  end
+   
+  def match_password(login_password="")
+    encrypted_password == BCrypt::Engine.hash_secret(login_password, salt)
   end
 
   def generate_token(column)
@@ -25,15 +54,10 @@ class User < ApplicationRecord
     end
   end
 
-  # Generate a friendly string randomly to be used as token.
-  # By default, length is 20 characters.
   private
 
-  def friendly_token(length = 20)
-    # To calculate real characters, we must perform this operation.
-    # See SecureRandom.urlsafe_base64
-    rlength = (length * 3) / 4
-    SecureRandom.urlsafe_base64(rlength).tr('lIO0', 'sxyz')
+  def friendly_token
+    SecureRandom.urlsafe_base64.tr('lIO0', 'sxyz')
   end
 
 end

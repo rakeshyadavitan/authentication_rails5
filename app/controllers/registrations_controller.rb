@@ -7,11 +7,10 @@ class RegistrationsController < ApplicationController
   end
 
   def create
-    @user = User.find_or_initialize_by(unconfirmed_email: user_params[:email])
+    @user = User.find_or_initialize_by(email: user_params[:email])
     @user.attributes = user_params
     if @user.save
-      @user.generate_token_and_send_instructions!(token_type: :confirmation)
-      redirect_to root_url, notice: "Check your email with subject 'Confirmation instructions'"
+      redirect_to root_url, notice: "User Created"
     else
       render :new
     end

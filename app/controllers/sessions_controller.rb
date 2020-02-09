@@ -1,13 +1,13 @@
 class SessionsController < ApplicationController
 
   before_action :set_user, only: :create
-  before_action :require_confirmation!, only: :create
 
   def new
   end
 
   def create
-    if @user&.authenticate(params[:password])
+    authorized_user = User.authenticate(params[:email],params[:password])
+    if authorized_user
       login!
       redirect_to root_url, notice: "Logged in!"
     else
@@ -22,13 +22,6 @@ class SessionsController < ApplicationController
   end
 
   private
-
-  def require_confirmation!
-    if @user.confirmed_at.blank?
-      flash.now.alert = "Email or password is invalid"
-      render :new
-    end
-  end
 
   def login!
     unless @user.remember_token

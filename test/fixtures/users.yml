@@ -3,19 +3,16 @@
 one:
   email: one@one.com
   name: MyString1
-  password_digest: <%= BCrypt::Password.create('password') %>
   remember_token: 'asdbasdf'
 
 two:
   email: two@two.com
   name: MyString2
-  password_digest: <%= BCrypt::Password.create('password') %>
   remember_token: 'axdbasdf1'
 
 three:
   email: j@j.com
   name: J
-  password_digest: <%= BCrypt::Password.create('password') %>
   remember_token: 'axdbasdf2'
 
 # == Schema Information

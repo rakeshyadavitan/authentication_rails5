@@ -14,10 +14,6 @@ class ApplicationController < ActionController::Base
     )
   end  
 
-  def authenticate_user!
-    redirect_to new_session_path, alert: "Not authorized!" if current_user.nil?
-  end
-
   def require_no_authentication
     if cookies[:remember_token]
       redirect_to root_url, alert: "Already authenticated!"
